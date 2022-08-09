@@ -6,15 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cryptocurrency Prices</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
 <body>
-    <form autocomplete="off" method="post">
-        <div class="autocomplete">
-            <input id="myInput" type="text" name="crypto" placeholder="crypto" required>
-        </div>
-        <input type="submit">
-    </form>
+    <div class="w3-panel">
+        <h3 class="w3-wide w3-monospace w3-center">Cryptocurrency Historical Prices</h3>
+        <form autocomplete="off" method="post">
+            <div class="w3-row">
+                <div class="w3-twothird">
+                    <input id="myInput" type="text" name="crypto" placeholder="enter crypto here..." required class="w3-input">
+                </div>
+                <div class="w3-third">
+                    <input type="submit" class="w3-button w3-block w3-light-grey" value="get price">
+                </div>
+            </div>
+        </form>
+        <hr>
+        <table id="mytbl" class="w3-table-all" style="width:50%;margin: auto;"></table>
+    </div>
     <script src="./index.js"></script>
 </body>
 

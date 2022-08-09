@@ -1,9 +1,20 @@
 document.querySelector('form').onsubmit = async(e)=>{
     e.preventDefault()
     const symbol = e.target.crypto.value;
+    if (document.querySelector('table')) document.querySelector('table').innerHTML = null
+    document.querySelector('table').innerHTML = `<caption>${symbol}</caption><tr><th>Date</th><th>Price</th></tr>`
     const res = await fetch(`https://2g65se.deta.dev/?symbol=${symbol}`)
     const data = await res.json()
-    console.log(data);
+    for(dt of data) {
+        const tr = document.createElement('tr')
+        const tdForDate = document.createElement('td')
+        tdForDate.innerText = dt[0]
+        tr.appendChild(tdForDate)
+        const tdForPrice = document.createElement('td')
+        tdForPrice.innerText = dt[1]
+        tr.appendChild(tdForPrice)
+        document.getElementById('mytbl').appendChild(tr)
+    }
 }
 
 
