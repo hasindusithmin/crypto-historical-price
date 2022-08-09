@@ -1,3 +1,11 @@
+document.querySelector('form').onsubmit = async(e)=>{
+    e.preventDefault()
+    const symbol = e.target.crypto.value;
+    const res = await fetch(`https://2g65se.deta.dev/?symbol=${symbol}`)
+    const data = await res.json()
+    console.log(data);
+}
+
 
 function autocomplete(inp, arr) {
     /*the autocomplete function takes two arguments,
