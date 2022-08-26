@@ -1,20 +1,84 @@
-document.querySelector('form').onsubmit = async(e)=>{
+const chartOpts = {
+    width: 800,
+    height: 500,
+    layout: {
+        textColor: '#d1d4dc',
+        backgroundColor: '#000000',
+    },
+    rightPriceScale: {
+        scaleMargins: {
+            top: 0.3,
+            bottom: 0.25,
+        },
+    },
+    crosshair: {
+        vertLine: {
+            width: 5,
+            color: 'rgba(224, 227, 235, 0.1)',
+            style: 0,
+        },
+        horzLine: {
+            visible: true,
+            labelVisible: true,
+        },
+    },
+    grid: {
+        vertLines: {
+            color: 'rgba(42, 46, 57, 0)',
+        },
+        horzLines: {
+            color: 'rgba(42, 46, 57, 0)',
+        },
+    },
+}
+const areaseriesopt = {
+    topColor: 'rgba(38, 198, 218, 0.56)',
+    bottomColor: 'rgba(38, 198, 218, 0.04)',
+    lineColor: 'rgba(38, 198, 218, 1)',
+    lineWidth: 2,
+    crossHairMarkerVisible: false,
+}
+
+document.querySelector('form').onsubmit = async (e) => {
     e.preventDefault()
     const symbol = e.target.crypto.value;
-    if (document.querySelector('table')) document.querySelector('table').innerHTML = null
-    document.querySelector('table').innerHTML = `<caption>${symbol}</caption><tr><th>Date</th><th>Price</th></tr>`
+    if (document.querySelector('table')) document.getElementById('mytbl').innerHTML = ''
+    document.getElementById('mytbl').innerHTML = `<caption class="w3-wide">${symbol}</caption><tr><th>Date</th><th>Price</th></tr>`
     const res = await fetch(`https://2g65se.deta.dev/?symbol=${symbol}`)
-    const data = await res.json()
-    for(dt of data) {
-        const tr = document.createElement('tr')
-        const tdForDate = document.createElement('td')
-        tdForDate.innerText = dt[0]
-        tr.appendChild(tdForDate)
-        const tdForPrice = document.createElement('td')
-        tdForPrice.innerText = dt[1]
-        tr.appendChild(tdForPrice)
-        document.getElementById('mytbl').appendChild(tr)
+    if (res.status == 200) {
+        document.getElementById('chart').innerHTML = ''
+        const Data = await res.json()
+        let dates = []
+        let prices = []
+        let date_price = []
+        for (D of Data) {
+            dates.push(D[0])
+            prices.push(D[1])
+        }
+        dates = dates.reverse()
+        prices = prices.reverse()
+        for (let i = 0; i < dates.length; i++) date_price.push({ time: dates[i], value: prices[i] })
+        const chart = LightweightCharts.createChart(document.getElementById('chart'), chartOpts)
+        const areaseries = chart.addAreaSeries(areaseriesopt)
+        areaseries.setData(date_price)
+        // Make Chart Responsive with screen resize
+        new ResizeObserver(entries => {
+            if (entries.length === 0 || entries[0].target !== document.getElementById('chart')) { return; }
+            const newRect = entries[0].contentRect;
+            chart.applyOptions({ height: newRect.height, width: newRect.width });
+        }).observe(document.getElementById('chart'));
+        for (dt of Data) {
+            const tr = document.createElement('tr')
+            const tdForDate = document.createElement('td')
+            tdForDate.innerText = dt[0]
+            tr.appendChild(tdForDate)
+            const tdForPrice = document.createElement('td')
+            tdForPrice.innerText = dt[1]
+            tr.appendChild(tdForPrice)
+            document.getElementById('mytbl').appendChild(tr)
+        }
     }
+
 }
 
 
@@ -115,6 +179,6 @@ function autocomplete(inp, arr) {
     });
 }
 
-const crypto = ['BTC-USD', 'ETH-USD', 'USDT-USD', 'USDC-USD', 'BNB-USD', 'XRP-USD', 'ADA-USD', 'BUSD-USD', 'SOL-USD', 'DOT-USD', 'DOGE-USD', 'HEX-USD', 'AVAX-USD', 'DAI-USD', 'MATIC-USD', 'WTRX-USD', 'SHIB-USD', 'STA-USD', 'UNI1-USD', 'TRX-USD', 'STETH-USD', 'WBTC-USD', 'ETC-USD', 'LEO-USD', 'LTC-USD', 'YOUC-USD', 'FTT-USD', 'NEAR-USD', 'LINK-USD', 'CRO-USD', 'ATOM-USD', 'XLM-USD', 'FLOW-USD', 'XMR-USD', 'BCH-USD', 'ALGO-USD', 'BTCB-USD', 'VET-USD', 'APE3-USD', 'FIL-USD', 'ICP-USD', 'MANA-USD', 'XCN1-USD', 'SAND-USD', 'BIT1-USD', 'XTZ-USD', 'HBAR-USD', 'THETA-USD', 'QNT-USD', 'TONCOIN-USD','FTM-USD']
+const crypto = ['BTC-USD', 'ETH-USD', 'USDT-USD', 'USDC-USD', 'BNB-USD', 'XRP-USD', 'ADA-USD', 'BUSD-USD', 'SOL-USD', 'DOT-USD', 'DOGE-USD', 'HEX-USD', 'AVAX-USD', 'DAI-USD', 'MATIC-USD', 'WTRX-USD', 'SHIB-USD', 'STA-USD', 'UNI1-USD', 'TRX-USD', 'STETH-USD', 'WBTC-USD', 'ETC-USD', 'LEO-USD', 'LTC-USD', 'YOUC-USD', 'FTT-USD', 'NEAR-USD', 'LINK-USD', 'CRO-USD', 'ATOM-USD', 'XLM-USD', 'FLOW-USD', 'XMR-USD', 'BCH-USD', 'ALGO-USD', 'BTCB-USD', 'VET-USD', 'APE3-USD', 'FIL-USD', 'ICP-USD', 'MANA-USD', 'XCN1-USD', 'SAND-USD', 'BIT1-USD', 'XTZ-USD', 'HBAR-USD', 'THETA-USD', 'QNT-USD', 'TONCOIN-USD', 'FTM-USD']
 
 autocomplete(document.getElementById("myInput"), crypto);

@@ -7,23 +7,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cryptocurrency Prices</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="shortcut icon" href="https://i.ibb.co/rst0ynp/blockchain.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 
 <body>
     <div class="w3-panel">
-        <h3 class="w3-wide w3-monospace w3-center">Cryptocurrency Historical Prices</h3>
-        <form autocomplete="off" method="post">
-            <div class="w3-row">
-                <div class="w3-twothird">
-                    <input id="myInput" type="text" name="crypto" placeholder="enter crypto here..." required class="w3-input">
-                </div>
-                <div class="w3-third">
-                    <input type="submit" class="w3-button w3-block w3-light-grey" value="get price">
-                </div>
+        <div class="w3-row">
+            <h3 class="w3-wide w3-monospace w3-center w3-padding"><sup>&copy;</sup>Cryptocurrency Historical Prices</h3>
+        </div>
+        <div class="w3-row">
+            <div class="w3-twothird">
+                <form autocomplete="off" method="post">
+                    <div class="w3-row">
+                        <div class="w3-twothird">
+                            <input id="myInput" type="text" name="crypto" placeholder="Enter crypto name here..." required class="w3-input">
+                        </div>
+                        <div class="w3-third">
+                            <button type="submit" class="w3-button w3-block w3-grey" title="Click to Fetch"><i class="fa fa-refresh w3-spin"></i></button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <div id="chart" class="w3-center"></div>
             </div>
-        </form>
-        <hr>
-        <table id="mytbl" class="w3-table-all" style="width:50%;margin: auto;"></table>
+            <div class="w3-third">
+                <table id="mytbl" class="w3-table-all" style="width:50%;margin: auto;"></table>
+            </div>
+        </div>
     </div>
     <script src="./index.js"></script>
 </body>
